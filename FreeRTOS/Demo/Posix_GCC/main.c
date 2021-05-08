@@ -74,7 +74,7 @@
 extern void main_blinky( void );
 extern void main_full( void );
 extern void main_tcp_echo_client_tasks( void );
-static void traceOnEnter( void );
+// static void traceOnEnter( void );
 /*
  * Only the comprehensive demo uses application hook (callback) functions.  See
  * http://www.freertos.org/a00016.html for more information.
@@ -102,7 +102,7 @@ void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer,
  * Writes trace data to a disk file when the trace recording is stopped.
  * This function will simply overwrite any trace files that already exist.
  */
-static void prvSaveTraceFile( void );
+// static void prvSaveTraceFile( void );
 
 /*-----------------------------------------------------------*/
 
@@ -120,20 +120,20 @@ static BaseType_t xTraceRunning = pdTRUE;
 
 int main( void )
 {
-    /* Do not include trace code when performing a code coverage analysis. */
-    #if ( projCOVERAGE_TEST != 1 )
-    {
-        /* Initialise the trace recorder.  Use of the trace recorder is optional.
-        See http://www.FreeRTOS.org/trace for more information. */
-        vTraceEnable( TRC_START );
+    // /* Do not include trace code when performing a code coverage analysis. */
+    // #if ( projCOVERAGE_TEST != 1 )
+    // {
+    //     /* Initialise the trace recorder.  Use of the trace recorder is optional.
+    //     See http://www.FreeRTOS.org/trace for more information. */
+    //     vTraceEnable( TRC_START );
 
-        /* Start the trace recording - the recording is written to a file if
-        configASSERT() is called. */
-        printf( "\r\nTrace started.\r\nThe trace will be dumped to disk if a call to configASSERT() fails.\r\n" );
-        printf( "\r\nThe trace will be dumped to disk if Enter is hit.\r\n" );
-        uiTraceStart();
-    }
-    #endif
+    //     /* Start the trace recording - the recording is written to a file if
+    //     configASSERT() is called. */
+    //     printf( "\r\nTrace started.\r\nThe trace will be dumped to disk if a call to configASSERT() fails.\r\n" );
+    //     printf( "\r\nThe trace will be dumped to disk if Enter is hit.\r\n" );
+    //     uiTraceStart();
+    // }
+    // #endif
 
     console_init();
     #if ( mainSELECTED_APPLICATION == BLINKY_DEMO )
@@ -188,7 +188,7 @@ void vApplicationIdleHook( void )
 
 
     usleep(15000);
-    traceOnEnter();
+    // traceOnEnter();
 
     #if ( mainSELECTED_APPLICATION == FULL_DEMO )
     {
@@ -230,25 +230,25 @@ void vApplicationTickHook( void )
     #endif /* mainSELECTED_APPLICATION */
 }
 
-void traceOnEnter()
-{
-    int ret;
-    struct timeval tv = { 0L, 0L };
-    fd_set fds;
-    FD_ZERO(&fds);
-    FD_SET(0, &fds);
-    ret = select(1, &fds, NULL, NULL, &tv);
-    if ( ret > 0 )
-    {
-    if( xTraceRunning == pdTRUE )
-    {
-        prvSaveTraceFile();
-    }
-    /* clear the buffer */
-    char buffer[200];
-    read(1, &buffer, 200);
-    }
-}
+// void traceOnEnter()
+// {
+//     int ret;
+//     struct timeval tv = { 0L, 0L };
+//     fd_set fds;
+//     FD_ZERO(&fds);
+//     FD_SET(0, &fds);
+//     ret = select(1, &fds, NULL, NULL, &tv);
+//     if ( ret > 0 )
+//     {
+//     if( xTraceRunning == pdTRUE )
+//     {
+//         prvSaveTraceFile();
+//     }
+//     /* clear the buffer */
+//     char buffer[200];
+//     read(1, &buffer, 200);
+//     }
+// }
 
 void vLoggingPrintf( const char *pcFormat,
                      ... )
@@ -293,7 +293,7 @@ volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 
             if( xTraceRunning == pdTRUE )
             {
-                prvSaveTraceFile();
+                // prvSaveTraceFile();
             }
         }
 
@@ -310,31 +310,31 @@ volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 }
 /*-----------------------------------------------------------*/
 
-static void prvSaveTraceFile( void )
-{
-    /* Tracing is not used when code coverage analysis is being performed. */
-    #if ( projCOVERAGE_TEST != 1 )
-    {
-    FILE * pxOutputFile;
+// static void prvSaveTraceFile( void )
+// {
+//     /* Tracing is not used when code coverage analysis is being performed. */
+//     #if ( projCOVERAGE_TEST != 1 )
+//     {
+//     FILE * pxOutputFile;
 
-        vTraceStop();
+//         // vTraceStop();
 
-        pxOutputFile = fopen( "Trace.dump", "wb" );
+//         pxOutputFile = fopen( "Trace.dump", "wb" );
 
-        if( pxOutputFile != NULL )
-        {
-            fwrite( RecorderDataPtr, sizeof( RecorderDataType ), 1, pxOutputFile );
-            fclose( pxOutputFile );
-            printf( "\r\nTrace output saved to Trace.dump\r\n" );
-        }
-        else
-        {
-            printf( "\r\nFailed to create trace dump file\r\n" );
-        }
-    }
-    #endif /* if ( projCOVERAGE_TEST != 1 ) */
-}
-/*-----------------------------------------------------------*/
+//         if( pxOutputFile != NULL )
+//         {
+//             fwrite( RecorderDataPtr, sizeof( RecorderDataType ), 1, pxOutputFile );
+//             fclose( pxOutputFile );
+//             printf( "\r\nTrace output saved to Trace.dump\r\n" );
+//         }
+//         else
+//         {
+//             printf( "\r\nFailed to create trace dump file\r\n" );
+//         }
+//     }
+//     #endif /* if ( projCOVERAGE_TEST != 1 ) */
+// }
+// /*-----------------------------------------------------------*/
 
 /* configUSE_STATIC_ALLOCATION is set to 1, so the application must provide an
 implementation of vApplicationGetIdleTaskMemory() to provide the memory that is

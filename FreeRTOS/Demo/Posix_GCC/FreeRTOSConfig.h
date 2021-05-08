@@ -150,7 +150,7 @@ used with multiple project configurations.  If it is
 	#define configUSE_MALLOC_FAILED_HOOK			1
 
 	/* Include the FreeRTOS+Trace FreeRTOS trace macro definitions. */
-	#include "trcRecorder.h"
+	// #include "trcRecorder.h"
 #endif
 
 /* networking definitions */
