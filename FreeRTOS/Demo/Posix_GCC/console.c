@@ -37,7 +37,7 @@
 SemaphoreHandle_t xStdioMutex;
 StaticSemaphore_t xStdioMutexBuffer;
 
-void console_init(void)
+void console_init_stdio_mutex(void)
 {
     xStdioMutex = xSemaphoreCreateMutexStatic(&xStdioMutexBuffer);
 }

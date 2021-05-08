@@ -35,7 +35,7 @@ extern "C" {
  * Example console I/O wrappers.
  *----------------------------------------------------------*/
 
-void console_init(void);
+void console_init_stdio_mutex(void);
 void console_print(const char *fmt, ...);
 
 #ifdef __cplusplus
